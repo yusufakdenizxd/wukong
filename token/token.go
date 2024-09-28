@@ -39,6 +39,13 @@ const (
 	RETURN   = "RETURN"
 	EQ       = "=="
 	NOT_EQ   = "!="
+	LOWEST   = iota
+	EQUALS
+	LESSGREATER
+	SUM
+	PRODUCT
+	PREFIX
+	CALL
 )
 
 var keywords = map[string]TokenType{
