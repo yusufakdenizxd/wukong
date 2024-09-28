@@ -62,3 +62,14 @@ func (l *LetStatement) statementNode() {}
 func (l *LetStatement) TokenLiteral() string {
 	return l.Token.Literal
 }
+
+type ExpresssionStatement struct {
+	Token      token.Token
+	Expression Expression
+}
+
+func (l *ExpresssionStatement) statementNode() {}
+
+func (l *ExpresssionStatement) TokenLiteral() string {
+	return l.Token.Literal
+}
