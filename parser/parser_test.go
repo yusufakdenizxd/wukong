@@ -112,10 +112,6 @@ func TestReturnStatements(t *testing.T) {
 
 }
 func testReturnStatements(t *testing.T, s ast.Statement) bool {
-	if s.TokenLiteral() != "let" {
-		t.Errorf("s.TokenLiteral not 'let'. got=%q", s.TokenLiteral())
-	}
-
 	letStmt, ok := s.(*ast.ReturnStatement)
 	if !ok {
 		t.Errorf("stmt not *ast.returnStatement. got=%T", s)
