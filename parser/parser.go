@@ -68,7 +68,7 @@ func (p *Parser) parseStatement() ast.Statement {
 	case token.RETURN:
 		return p.parseReturnStatement()
 	default:
-		return p.parseExpresssionStatement()
+		return p.parseExpressionStatement()
 	}
 }
 
@@ -127,10 +127,10 @@ func (p *Parser) parseLetStatement() *ast.LetStatement {
 	return stmt
 }
 
-func (p *Parser) parseExpresssionStatement() *ast.ExpresssionStatement {
-	stmt := &ast.ExpresssionStatement{Token: p.curToken}
+func (p *Parser) parseExpressionStatement() *ast.ExpressionStatement {
+	stmt := &ast.ExpressionStatement{Token: p.curToken}
 
-	stmt.Expression = p.parseExpresssion(token.LOWEST)
+	stmt.Expression = p.parseExpression(token.LOWEST)
 
 	for !p.curTokenIs(token.SEMICOLON) {
 		p.nextToken()
@@ -151,7 +151,7 @@ func (p *Parser) parseReturnStatement() *ast.ReturnStatement {
 	return stmt
 }
 
-func (p *Parser) parseExpresssion(precedence int) ast.Expression {
+func (p *Parser) parseExpression(precedence int) ast.Expression {
 	prefix := p.prefixParseFns[p.curToken.Type]
 
 	if prefix == nil {
