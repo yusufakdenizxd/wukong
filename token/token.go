@@ -39,7 +39,8 @@ const (
 	RETURN   = "RETURN"
 	EQ       = "=="
 	NOT_EQ   = "!="
-	LOWEST   = iota
+	_        = iota
+	LOWEST
 	EQUALS
 	LESSGREATER
 	SUM
