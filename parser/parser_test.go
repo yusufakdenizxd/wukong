@@ -230,13 +230,13 @@ func TestParsingPrefixExpressions(t *testing.T) {
 			t.Fatalf("exp.Operator is not '%s'. got :%s", tt.operator, exp.Operator)
 		}
 
-		if !testIntegerLiteal(t, exp.Right, tt.integeerValue) {
+		if !testIntegerLiteral(t, exp.Right, tt.integeerValue) {
 			return
 		}
 	}
 }
 
-func testIntegerLiteal(t *testing.T, il ast.Expression, value int64) bool {
+func testIntegerLiteral(t *testing.T, il ast.Expression, value int64) bool {
 	integ, ok := il.(*ast.IntegerLiteral)
 
 	if !ok {
@@ -296,7 +296,7 @@ func TestParsingInfixExpressions(t *testing.T) {
 			t.Fatalf("stmt is not *ast.InfixExpression. got=%T", stmt.Expression)
 		}
 
-		if !testIntegerLiteal(t, exp.Left, tt.leftValue) {
+		if !testIntegerLiteral(t, exp.Left, tt.leftValue) {
 			return
 		}
 
@@ -304,7 +304,7 @@ func TestParsingInfixExpressions(t *testing.T) {
 			t.Fatalf("exp.Operator is not '%s'. got :%s", tt.operator, exp.Operator)
 		}
 
-		if !testIntegerLiteal(t, exp.Right, tt.rightValue) {
+		if !testIntegerLiteral(t, exp.Right, tt.rightValue) {
 			return
 		}
 	}
