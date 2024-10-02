@@ -140,6 +140,21 @@ func (il *IntegerLiteral) String() string {
 	return il.Token.Literal
 }
 
+type BooleanLiteral struct {
+	Token token.Token
+	Value bool
+}
+
+func (il *BooleanLiteral) expressionNode() {}
+
+func (il *BooleanLiteral) TokenLiteral() string {
+	return il.Token.Literal
+}
+
+func (il *BooleanLiteral) String() string {
+	return il.Token.Literal
+}
+
 type PrefixExpression struct {
 	Token    token.Token
 	Operator string
