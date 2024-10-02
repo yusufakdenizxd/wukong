@@ -170,9 +170,9 @@ func TestIntegerLiteralExpression(t *testing.T) {
 
 func TestParsingPrefixExpressions(t *testing.T) {
 	prefixTests := []struct {
-		input         string
-		operator      string
-		integeerValue int64
+		input        string
+		operator     string
+		integerValue int64
 	}{
 		{"!5;", "!", 5},
 		{"-15;", "-", 15},
@@ -204,7 +204,7 @@ func TestParsingPrefixExpressions(t *testing.T) {
 			t.Fatalf("exp.Operator is not '%s'. got :%s", tt.operator, exp.Operator)
 		}
 
-		if !testIntegerLiteral(t, exp.Right, tt.integeerValue) {
+		if !testIntegerLiteral(t, exp.Right, tt.integerValue) {
 			return
 		}
 	}
