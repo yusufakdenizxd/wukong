@@ -231,6 +231,27 @@ func testIntegerLiteral(t *testing.T, il ast.Expression, value int64) bool {
 	return true
 }
 
+func testBoolLiteral(t *testing.T, il ast.Expression, value bool) bool {
+	bol, ok := il.(*ast.BooleanLiteral)
+
+	if !ok {
+		t.Errorf("il not *ast.BooleanLiteral. got=%T", il)
+		return false
+	}
+
+	if bol.Value != value {
+		t.Errorf("bol.Value not %t. got=%t", value, bol.Value)
+		return false
+	}
+
+	if bol.TokenLiteral() != fmt.Sprintf("%t", value) {
+		t.Errorf("bol.TokenLiteral not %t. got=%s", value, bol.TokenLiteral())
+		return false
+	}
+
+	return true
+}
+
 func TestParsingInfixExpressions(t *testing.T) {
 	infixTests := []struct {
 		input      string
@@ -325,6 +346,8 @@ func testLiteralExpression(t *testing.T, exp ast.Expression, expected interface{
 		return testIntegerLiteral(t, exp, int64(v))
 	case int64:
 		return testIntegerLiteral(t, exp, v)
+	case bool:
+		return testBoolLiteral(t, exp, v)
 	}
 	t.Errorf("type of exp not handled. got=%T", exp)
 	return false
@@ -369,3 +392,31 @@ func testInfixExpression(t *testing.T, exp ast.Expression, left interface{}, ope
 	return true
 }
 
+func TestBooleanExpression(t *testing.T) {
+	tests := []struct {
+		input    string
+		expected string
+	}{
+		{"true", "true"},
+		{"false", "false"},
+		{"3 > 5 == false", "((3 > 5) == false)"},
+		{"3 < 5 == true", "((3 < 5) == true)"},
+	}
+
+	for _, tt := range tests {
+		l := lexer.New(tt.input)
+		p := New(l)
+		program := p.ParseProgram()
+		checkParserErrors(t, p)
+
+		if len(program.Statements) != 1 {
+			t.Fatalf("program.Statements does not contain %d statements. got=%d\n", 1, len(program.Statements))
+		}
+
+		actual := program.String()
+		if actual != tt.expected {
+			t.Fatalf("excepted=%q. got =%q", tt.expected, actual)
+		}
+	}
+
+}
