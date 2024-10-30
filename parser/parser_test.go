@@ -476,3 +476,48 @@ func TestIfExpression(t *testing.T) {
 		t.Errorf("exp.Alternative.Statements not nil.")
 	}
 }
+
+func TestFunctionLiteralParsing(t *testing.T) {
+	input := `fn(x, y) { x + y; }`
+
+	l := lexer.New(input)
+	p := New(l)
+	program := p.ParseProgram()
+	checkParserErrors(t, p)
+	fmt.Println("There was no parse error")
+
+	if len(program.Statements) != 1 {
+		t.Fatalf("program.Statements does not contain %d statements. got=%d\n", 1, len(program.Statements))
+	}
+
+	stmt, ok := program.Statements[0].(*ast.ExpressionStatement)
+
+	if !ok {
+		t.Fatalf("program.Statements[0] is not ast.ExpressionStatement. got=%T", program.Statements[0])
+
+		fnc, ok := stmt.Expression.(*ast.FunctionLiteral)
+
+		if !ok {
+			t.Fatalf("stmt.Expression is not ast.FunctionLiteral. got=%T", fnc)
+		}
+
+		if len(fnc.Parameters) != 2 {
+			t.Fatalf("function literal parameters wrong. want , got=%d\n", len(fnc.Parameters))
+		}
+		testLiteralExpression(t, fnc.Parameters[0], "x")
+		testLiteralExpression(t, fnc.Parameters[1], "y")
+
+		if len(fnc.Body.Statements) != 1 {
+			t.Fatalf("fnc.Body.Statements has not statements. got=%d\n", len(fnc.Body.Statements))
+		}
+
+		bodyStmt, ok := fnc.Body.Statements[0].(*ast.ExpressionStatement)
+
+		if !ok {
+			t.Fatalf("function body stmt is not ast.ExpressionStatement. got=%T", fnc.Body.Statements[0])
+		}
+
+		testInfixExpression(t, bodyStmt.Expression, "x", "+", "y")
+	}
+
+}
