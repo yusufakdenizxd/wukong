@@ -111,6 +111,6 @@ func evalIntegerInfixExpressiond(operator string, left object.Object, right obje
 	case "/":
 		return &object.Integer{Value: leftVal / rightVal}
 	default:
-		return nil
+		return NULL
 	}
 }
