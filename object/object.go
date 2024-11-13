@@ -12,6 +12,7 @@ const (
 	INTEGER_OBJ      = "INTEGER"
 	BOOL_OBJ         = "BOOLEAN"
 	NULL_OBJ         = "NULL"
+	STRING_OBJ       = "STRING"
 	RETURN_VALUE_OBJ = "RETURN_VALUE"
 	ERROR_OBJ        = "ERROR"
 	FUNCTION_OBJ     = "FUNCTION"
@@ -66,3 +67,10 @@ func (f *Function) Inspect() string {
 	return fmt.Sprintf("fn(%s) {\n%s\n}",
 		f.Parameters, f.Body.String())
 }
+
+type String struct {
+	Value string
+}
+
+func (s *String) Type() ObjectType { return STRING_OBJ }
+func (s *String) Inspect() string  { return s.Value }
