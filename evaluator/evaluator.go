@@ -190,7 +190,7 @@ func evalInfixExpression(operator string, left object.Object, right object.Objec
 	case left.Type() != right.Type():
 		return newError("type mismatch: %s %s %s", left.Type(), operator, right.Type())
 	case left.Type() == object.INTEGER_OBJ && right.Type() == object.INTEGER_OBJ:
-		return evalIntegerInfixExpressiond(operator, left, right)
+		return evalIntegerInfixExpression(operator, left, right)
 	case operator == "==":
 		return nativeBoolToBooleanObject(left == right)
 	case operator == "!=":
@@ -201,7 +201,7 @@ func evalInfixExpression(operator string, left object.Object, right object.Objec
 
 }
 
-func evalIntegerInfixExpressiond(operator string, left object.Object, right object.Object) object.Object {
+func evalIntegerInfixExpression(operator string, left object.Object, right object.Object) object.Object {
 	leftVal := left.(*object.Integer).Value
 	rightVal := right.(*object.Integer).Value
 
