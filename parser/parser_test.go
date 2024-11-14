@@ -487,7 +487,6 @@ func TestFunctionLiteralParsing(t *testing.T) {
 	p := New(l)
 	program := p.ParseProgram()
 	checkParserErrors(t, p)
-	fmt.Println("There was no parse error")
 
 	if len(program.Statements) != 1 {
 		t.Fatalf("program.Statements does not contain %d statements. got=%d\n", 1, len(program.Statements))
@@ -624,8 +623,6 @@ func TestLetStatemens(t *testing.T) {
 		}
 
 		letStatement := stmt.(*ast.LetStatement)
-
-		fmt.Println(letStatement.Value)
 
 		if !testLiteralExpression(t, letStatement.Value, tt.expectedValue) {
 			return
