@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"fmt"
 	"io"
+	"os"
 
 	"wukong.com/evaluator"
 	"wukong.com/lexer"
@@ -42,6 +43,31 @@ func Start(in io.Reader, out io.Writer) {
 		}
 	}
 
+}
+
+func StartScript(in io.Reader, out io.Writer, filePath string) {
+	env := object.NewEnvironment()
+
+	fileContent, err := os.ReadFile(filePath)
+	if err != nil {
+		fmt.Fprintf(out, "Error reading file: %s\n", err)
+		return
+	}
+
+	l := lexer.New(string(fileContent))
+	p := parser.New(l)
+
+	program := p.ParseProgram()
+	if len(p.Errors()) != 0 {
+		printParseErrors(out, p.Errors())
+		return
+	}
+
+	evaluated := evaluator.Eval(program, env)
+	if evaluated != nil {
+		io.WriteString(out, evaluated.Inspect())
+		io.WriteString(out, "\n")
+	}
 }
 
 func printParseErrors(out io.Writer, errors []string) {
