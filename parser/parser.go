@@ -19,6 +19,7 @@ var precedences = map[token.TokenType]int{
 	token.SLASH:    token.PRODUCT,
 	token.ASTERISK: token.PRODUCT,
 	token.LPAREN:   token.CALL,
+	token.LBRACKET: token.INDEX,
 }
 
 type Parser struct {
@@ -63,6 +64,7 @@ func New(l *lexer.Lexer) *Parser {
 	p.registerInfix(token.SLASH, p.parseInfixExpression)
 	p.registerInfix(token.ASTERISK, p.parseInfixExpression)
 	p.registerInfix(token.LPAREN, p.parseCallExpression)
+	p.registerInfix(token.LBRACKET, p.parseIndexExpression)
 
 	p.nextToken()
 	p.nextToken()
@@ -439,4 +441,18 @@ func (p *Parser) parseExpressionList(end token.TokenType) []ast.Expression {
 	}
 
 	return list
+}
+
+func (p *Parser) parseIndexExpression(left ast.Expression) ast.Expression {
+	exp := &ast.IndexExpression{Token: p.curToken, Left: left}
+
+	p.nextToken()
+
+	exp.Index = p.parseExpression(token.LOWEST)
+
+	if !p.exceptPeek(token.RBRAKET) {
+		return nil
+	}
+
+	return exp
 }

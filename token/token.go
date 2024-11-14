@@ -50,6 +50,7 @@ const (
 	PRODUCT
 	PREFIX
 	CALL
+	INDEX
 )
 
 var keywords = map[string]TokenType{
